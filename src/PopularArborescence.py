@@ -111,7 +111,7 @@ class PopularArborescence:
 
         return I
 
-    def solve(self) -> list[int, tuple[set[tuple[int, int]], set[tuple[int, int, int]], set[tuple[int, int]], list[set[tuple[int, int]]]]]:
+    def solve(self) -> tuple[bool, list[int, tuple[set[tuple[int, int]], set[tuple[int, int, int]], set[tuple[int, int]], list[set[tuple[int, int]]]]]]:
         res = []
         g: list[list[int]] = [[] for _ in range(self.n)]
         for s, t in self.edges:
@@ -130,7 +130,7 @@ class PopularArborescence:
                     k = i
                     break
             if k == -1:
-                return res
+                return (True, res)
 
             self.C[k] = self.span(self.n, self.intersect(I, self.C[k]), self.edges)
 
@@ -139,4 +139,4 @@ class PopularArborescence:
                 self.C.append(self.edges)
 
         print("Not Found")
-        return res
+        return (False, res)

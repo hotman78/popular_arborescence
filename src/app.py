@@ -1,26 +1,23 @@
 import streamlit as st
 from solve import solve
+from make_random import make_random
 
 # left_column, right_column = st.columns(2)
 
 if "input" not in st.session_state:
     st.session_state["input"] = ""
-is_sample = st.button("Sample", type="primary")
-if is_sample:
-    st.session_state["input"] = """5 11
-0 1 3
-0 2 3
-0 3 3
-1 2 1
-1 3 2
-2 1 1
-2 4 2
-3 1 2
-3 4 1
-4 2 2
-4 3 1
+is_sample01 = st.button("Sample01", type="primary")
+is_sample02 = st.button("Sample02", type="primary")
+is_random = st.button("Random", type="primary")
 
-"""
+
+if is_sample01:
+    st.session_state["input"] = open("sample/sample01.txt", "r").read()
+if is_sample02:
+    st.session_state["input"] = open("sample/sample02.txt", "r").read()
+if is_random:
+    st.session_state["input"] = make_random()
+
 show_dot_text = st.checkbox("show dot text")
 input = st.text_area("Input", key="input", height=200)
 
@@ -29,7 +26,7 @@ if input == "":
     st.text("Please enter input")
     st.stop()
 
-graphlist, weight = solve(input)
+is_found, graphlist, weight = solve(input)
 id = st.number_input("ID", value=0, min_value=0, max_value=len(graphlist) - 1)
 
 
@@ -51,7 +48,7 @@ def make_dot() -> str:
     E_ = set((s, t) for _, s, t in E)
     res = "digraph G {\n"
     res += "rankdir=LR;\n"
-    print(len(C))
+    # print(len(C))
     for i in range(n):
         res += f'{i} [label="{i}"];\n'
     for s, t in edges:
@@ -69,6 +66,10 @@ def make_dot() -> str:
 
 
 dot = make_dot()
+if is_found:
+    st.text("Popular arborescence founded.")
+else:
+    st.text("No popular arborescence.")
 st.text("red: I, blue: E")
 with st.container():
     st.graphviz_chart(dot)
