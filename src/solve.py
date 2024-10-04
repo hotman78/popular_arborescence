@@ -4,7 +4,9 @@ from PopularArborescence import PopularArborescence
 
 
 @st.cache_data
-def solve(input: str) -> list[tuple[int, set[tuple[int, int]], set[tuple[int, int, int]], set[tuple[int, int]], list[set[tuple[int, int]]]]]:
+def solve(
+    input: str,
+) -> tuple[list[tuple[int, set[tuple[int, int]], set[tuple[int, int, int]], set[tuple[int, int]], list[set[tuple[int, int]]]]], dict[tuple[int, int], int]]:
     input = input.splitlines()
     n, m = map(int, input[0].split())
     edges = set()
@@ -35,7 +37,7 @@ def solve(input: str) -> list[tuple[int, set[tuple[int, int]], set[tuple[int, in
     # Call to popular_arborescence function
     res = PopularArborescence(n, edges, comp).solve()
 
-    return res
+    return (res, weight)
 
 
 # if __name__ == "__main__":

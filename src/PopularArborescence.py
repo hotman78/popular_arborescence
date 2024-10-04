@@ -1,4 +1,5 @@
 from collections.abc import Callable
+import copy
 
 
 class UF:
@@ -117,12 +118,13 @@ class PopularArborescence:
             g[t].append(s)
 
         p = 1
+        res.append((self.n, self.edges, {}, {}, copy.deepcopy(self.C)))
 
         while p < self.n:
             E = self.Compute_E_C()
             I = self.Compute_I(E)
             k = -1
-            res.append((self.n, self.edges, E, I, self.C))
+            res.append((self.n, self.edges, E, I, copy.deepcopy(self.C)))
             for i, c in enumerate(self.C):
                 if len(self.intersect(c, I)) < self.rank(self.n, c):
                     k = i

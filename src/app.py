@@ -5,7 +5,6 @@ from solve import solve
 
 if "input" not in st.session_state:
     st.session_state["input"] = ""
-
 is_sample = st.button("Sample", type="primary")
 if is_sample:
     st.session_state["input"] = """5 11
@@ -22,7 +21,7 @@ if is_sample:
 4 3 1
 
 """
-
+show_dot_text = st.checkbox("show dot text")
 input = st.text_area("Input", key="input", height=200)
 
 
@@ -30,7 +29,7 @@ if input == "":
     st.text("Please enter input")
     st.stop()
 
-graphlist = solve(input)
+graphlist, weight = solve(input)
 id = st.number_input("ID", value=0, min_value=0, max_value=len(graphlist) - 1)
 
 
@@ -50,23 +49,29 @@ def c(x: int) -> str:
 def make_dot() -> str:
     n, edges, E, I, C = graphlist[id]
     E_ = set((s, t) for _, s, t in E)
-    str = "digraph G {\n"
-    str += "rankdir=LR;\n"
+    res = "digraph G {\n"
+    res += "rankdir=LR;\n"
+    print(len(C))
     for i in range(n):
-        str += f'{i} [label="{i}"];\n'
+        res += f'{i} [label="{i}"];\n'
     for s, t in edges:
-        if (s, t) in I:
-            str += f"{s} -> {t} [color=red];\n"
-        elif (s, t) in E_:
-            str += f"{s} -> {t} [color=blue];\n"
-        else:
-            str += f"{s} -> {t};\n"
-    str += "}\n"
-    return str
+        for idx, c in enumerate(C):
+            if (s, t) in c:
+                if (s, t) in I:
+                    res += f'{s} -> {t} [color=red, label="{weight[(s, t)], idx}"];\n'
+                elif (s, t) in E_:
+                    res += f'{s} -> {t} [color=blue, label="{weight[(s, t)], idx}"];\n'
+                else:
+                    res += f'{s} -> {t} [label="{weight[(s, t)], idx}"];\n'
+                break
+    res += "}\n"
+    return res
 
 
 dot = make_dot()
+st.text("red: I, blue: E")
 with st.container():
     st.graphviz_chart(dot)
-# st.text(dot)
+if show_dot_text:
+    st.text(dot)
 st.text("Done.")
