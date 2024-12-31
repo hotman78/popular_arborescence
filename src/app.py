@@ -24,6 +24,13 @@ input = st.text_area("Input", key="input", height=200)
 
 if input == "":
     st.text("Please enter input")
+    st.text("""
+本ビジュアライザは、以下の論文に基づいて作成されました。
+
+Kavitha, T., Makino, K., Schlotter, I., & Yokoi, Y. (2024). Arborescences, colorful forests, and popularity. In Proceedings of the 2024 Annual ACM-SIAM Symposium on Discrete Algorithms (SODA) (pp. 3724-3746). Society for Industrial and Applied Mathematics
+
+""")
+
     st.stop()
 
 is_found, graphlist, weight = solve(input)
@@ -76,3 +83,9 @@ with st.container():
 if show_dot_text:
     st.text(dot)
 st.text("Done.")
+st.text("""
+本ビジュアライザは、以下の論文に基づいて作成されました。
+
+Kavitha, T., Makino, K., Schlotter, I., & Yokoi, Y. (2024). Arborescences, colorful forests, and popularity. In Proceedings of the 2024 Annual ACM-SIAM Symposium on Discrete Algorithms (SODA) (pp. 3724-3746). Society for Industrial and Applied Mathematics
+
+""")
